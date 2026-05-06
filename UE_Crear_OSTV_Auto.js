@@ -14,6 +14,20 @@ define(['N/record', 'N/search', 'N/log'], (record, search, log) => {
     const BODY_DEPARTAMENTO = 'custbodysm_departamento_nslc';
     const BODY_CIUDAD = 'custbodysm_ciudad_o_municipio_nslc';
 
+    const BODY_COMPETENCIAS = 'custbody_sm_competencias_proyecto';
+
+    const MAPEO_COMPETENCIAS = {
+        '1': '274',
+        '2': '274',
+        '3': '274',
+        '4': '271',
+        '5': '270',
+        '6': '269',
+        '7': '268',
+        '8': '272',
+        '9': '273'
+    };
+
     const itemsValidos = [
         797,3441,3442,798,3443,3444,799,3445,3446,
         800,3447,3448,803,804,3449,3450,
@@ -107,10 +121,7 @@ define(['N/record', 'N/search', 'N/log'], (record, search, log) => {
     }
 
     function extraerDatosDescripcion(descripcion) {
-        const resultado = {
-            paradas: '',
-            empresa: ''
-        };
+        const resultado = { paradas: '', empresa: '' };
 
         if (!descripcion) return resultado;
 
@@ -157,9 +168,7 @@ define(['N/record', 'N/search', 'N/log'], (record, search, log) => {
     function eliminarOSTVExistente(parentId) {
         const resultados = search.create({
             type: RECORD_OS_TV,
-            filters: [
-                [PARENT_FIELD, 'anyof', parentId]
-            ],
+            filters: [[PARENT_FIELD, 'anyof', parentId]],
             columns: ['internalid']
         }).run().getRange({
             start: 0,
@@ -200,6 +209,8 @@ define(['N/record', 'N/search', 'N/log'], (record, search, log) => {
 
             eliminarOSTVExistente(recId);
 
+            const competencias = new Set();
+
             const lineCount = rec.getLineCount({
                 sublistId: 'item'
             });
@@ -226,6 +237,12 @@ define(['N/record', 'N/search', 'N/log'], (record, search, log) => {
                 });
 
                 const descripcionEquipo = mapaDescripcionEquipo[Number(itemId)] || '';
+                const competenciaId = MAPEO_COMPETENCIAS[String(descripcionEquipo)];
+
+                if (competenciaId) {
+                    competencias.add(String(competenciaId));
+                }
+
                 const datos = extraerDatosDescripcion(descripcion);
                 const empresaId = obtenerEmpresaId(datos.empresa);
 
@@ -296,22 +313,40 @@ define(['N/record', 'N/search', 'N/log'], (record, search, log) => {
                     itemId,
                     cantidad,
                     descripcionEquipo,
+                    competenciaId,
                     paradas: datos.paradas,
                     empresaTexto: datos.empresa,
                     empresaId
                 });
             }
 
+            const valuesToUpdate = {
+                [CAMPO_GENERAR]: false,
+                custbody_sm_estado: '1',
+                custbody_sm_tipos_estado: '11'
+            };
+
+            const competenciasFinales = Array.from(competencias);
+
+            if (competenciasFinales.length > 0) {
+                valuesToUpdate[BODY_COMPETENCIAS] = competenciasFinales;
+            }
+
             record.submitFields({
                 type: recType,
                 id: recId,
-                values: {
-                    [CAMPO_GENERAR]: false
-                },
+                values: valuesToUpdate,
                 options: {
                     enableSourcing: false,
                     ignoreMandatoryFields: true
                 }
+            });
+
+            log.audit('Orden actualizada después de crear OS TV', {
+                recId,
+                competenciasFinales,
+                estado: '1',
+                tipoEstado: '11'
             });
 
         } catch (e) {
