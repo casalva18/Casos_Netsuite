@@ -57,6 +57,24 @@ Esta carpeta contiene scripts Client Script y User Event diseñados para:
 - Comprueba en servidor que cuando existe el artículo `6440`, el campo `custbody_sm_visitas_residenciales` esté completado.
 - Lanza un error específico si no se cumple la condición.
 
+### `SM_CS_Botones_OS.js`
+- Client Script para formulario NetSuite.
+- Define funciones de botones para cambiar el estado de la orden de servicio.
+- Resuelve la URL de un Suitelet con los parámetros `recId`, `recType` y `accion`.
+- Redirige a la Suitelet para aplicar los cambios de estado.
+
+### `SM_SL_Cambiar_Estado_OS.js`
+- Suitelet `onRequest`.
+- Recibe `recId`, `recType` y `accion` desde la URL.
+- Actualiza los campos `custbody_sm_estado` y `custbody_sm_tipos_estado` según la acción `parcial` o `finalizada`.
+- Redirige de vuelta al registro y maneja errores en la respuesta.
+
+### `SM_UE_Botones_OS.js`
+- User Event `beforeLoad`.
+- Agrega los botones `Visita Parcial` y `Finalizada` al formulario cuando se visualiza el registro.
+- Construye las URLs del Suitelet para cada acción.
+- Inserta botones que navegan directamente al Suitelet.
+
 ## Cambios recientes
 
 - Nuevos scripts:
