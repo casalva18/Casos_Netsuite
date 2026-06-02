@@ -8,7 +8,7 @@ define(['N/error'], function(error) {
 
         var record = context.newRecord;
 
-        var articuloObjetivo = '6440';
+        var articulosObjetivo = ['6440', '6444', '6443', '6441', '6442'];
         var campoObligatorio = record.getValue({
             fieldId: 'custbody_sm_visitas_residenciales'
         });
@@ -26,7 +26,7 @@ define(['N/error'], function(error) {
                 line: i
             });
 
-            if (String(item) === articuloObjetivo) {
+            if (articulosObjetivo.indexOf(String(item)) !== -1) {
                 tieneArticulo = true;
                 break;
             }

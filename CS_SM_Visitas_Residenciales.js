@@ -7,7 +7,7 @@ define([], function () {
     function saveRecord(context) {
         var record = context.currentRecord;
 
-        var articuloObjetivo = '6440';
+        var articulosObjetivo = ['6440', '6444', '6443', '6441', '6442'];
         var itemCount = record.getLineCount({ sublistId: 'item' });
 
         var tieneArticulo = false;
@@ -19,7 +19,7 @@ define([], function () {
                 line: i
             });
 
-            if (String(item) === articuloObjetivo) {
+            if (articulosObjetivo.indexOf(String(item)) !== -1) {
                 tieneArticulo = true;
                 break;
             }
