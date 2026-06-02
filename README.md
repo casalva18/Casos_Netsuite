@@ -57,6 +57,17 @@ Esta carpeta contiene scripts Client Script y User Event diseñados para:
 - Comprueba en servidor que cuando existe el artículo `6440`, el campo `custbody_sm_visitas_residenciales` esté completado.
 - Lanza un error específico si no se cumple la condición.
 
+## Cambios recientes
+
+- Nuevos scripts:
+  - `SM_CS_Botones_OS.js`: Client Script que envía al Suitelet para cambiar el estado de la OS a `parcial` o `finalizada`.
+  - `SM_SL_Cambiar_Estado_OS.js`: Suitelet que actualiza los campos `custbody_sm_estado` y `custbody_sm_tipos_estado` según la acción recibida, y redirige al registro.
+  - `SM_UE_Botones_OS.js`: User Event `beforeLoad` que agrega los botones `Visita Parcial` y `Finalizada` al formulario en vista.
+- Archivos actualizados:
+  - `CS_SM_Visitas_Residenciales.js`
+  - `UE_SM_Competencias_Proyecto.js`
+  - `UE_SM_Visitas_Residenciales.js`
+
 ## Requisitos y despliegue
 
 - NetSuite API version: `2.x` y `2.1`.
