@@ -47,6 +47,13 @@ Esta carpeta contiene scripts Client Script y User Event diseñados para:
 - Vincula el Client Script `CS_Generar_OSTV.js` al formulario.
 - Añade el botón `Generar OS TV` para ejecutar la lógica desde la UI.
 
+### `ue_set_clase_servicio_os.js`
+- User Event `afterSubmit`.
+- Revisa todas las líneas de la sublista `item` en la orden.
+- Toma la primera clase (`class`) encontrada en una línea de item.
+- Actualiza el campo de cabecera `custbody_sm_clase_servicio` con esa clase.
+- Omite la actualización si el campo ya tiene el mismo valor.
+
 ### `UE_SM_Competencias_Proyecto.js`
 - User Event `afterSubmit`.
 - Mapea el valor de equipos en líneas OS TV a competencias de proyecto.
@@ -81,6 +88,7 @@ Esta carpeta contiene scripts Client Script y User Event diseñados para:
   - `SM_CS_Botones_OS.js`: Client Script que envía al Suitelet para cambiar el estado de la OS a `parcial` o `finalizada`.
   - `SM_SL_Cambiar_Estado_OS.js`: Suitelet que actualiza los campos `custbody_sm_estado` y `custbody_sm_tipos_estado` según la acción recibida, y redirige al registro.
   - `SM_UE_Botones_OS.js`: User Event `beforeLoad` que agrega los botones `Visita Parcial` y `Finalizada` al formulario en vista.
+  - `ue_set_clase_servicio_os.js`: User Event `afterSubmit` que actualiza el campo `custbody_sm_clase_servicio` tomando la primera clase encontrada en la sublista `item`.
 - Archivos actualizados:
   - `CS_SM_Visitas_Residenciales.js`
   - `UE_SM_Competencias_Proyecto.js`
