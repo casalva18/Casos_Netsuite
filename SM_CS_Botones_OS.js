@@ -14,6 +14,13 @@ define(['N/currentRecord', 'N/url'], (currentRecord, url) => {
     cambiarEstado('finalizada');
   }
 
+  function enviarFacturacion() {
+    if (!confirm('¿Está seguro de marcar esta Orden de Servicio como enviada a Facturación?')) {
+      return;
+    }
+    cambiarEstado('enviarFacturacion');
+  }
+
   function cambiarEstado(accion) {
     const rec = currentRecord.get();
 
@@ -33,6 +40,7 @@ define(['N/currentRecord', 'N/url'], (currentRecord, url) => {
   return {
     pageInit,
     visitaParcial,
-    finalizada
+    finalizada,
+    enviarFacturacion
   };
 });

@@ -26,6 +26,10 @@ define(['N/record', 'N/redirect', 'N/log'], (record, redirect, log) => {
           custbody_sm_estado: '3',
           custbody_sm_tipos_estado: '16'
         };
+      } else if (accion === 'enviarFacturacion') {
+        valuesToUpdate = {
+          custbody_sm_enviado_fact: true
+        };
       } else {
         throw new Error('Acción no válida: ' + accion);
       }

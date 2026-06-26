@@ -67,6 +67,7 @@ Esta carpeta contiene scripts Client Script y User Event diseñados para:
 ### `SM_CS_Botones_OS.js`
 - Client Script para formulario NetSuite.
 - Define funciones de botones para cambiar el estado de la orden de servicio.
+- Agrega `enviarFacturacion()` que confirma la acción y redirige al Suitelet con la acción `enviarFacturacion`.
 - Resuelve la URL de un Suitelet con los parámetros `recId`, `recType` y `accion`.
 - Redirige a la Suitelet para aplicar los cambios de estado.
 
@@ -74,20 +75,22 @@ Esta carpeta contiene scripts Client Script y User Event diseñados para:
 - Suitelet `onRequest`.
 - Recibe `recId`, `recType` y `accion` desde la URL.
 - Actualiza los campos `custbody_sm_estado` y `custbody_sm_tipos_estado` según la acción `parcial` o `finalizada`.
+- Agrega la acción `enviarFacturacion`, que marca `custbody_sm_enviado_fact` como `true`.
 - Redirige de vuelta al registro y maneja errores en la respuesta.
 
 ### `SM_UE_Botones_OS.js`
 - User Event `beforeLoad`.
 - Agrega los botones `Visita Parcial` y `Finalizada` al formulario cuando se visualiza el registro.
+- Agrega el botón `Enviar a Facturación` solo para el rol `1020` si el campo `custbody_sm_enviado_fact` no está marcado.
 - Construye las URLs del Suitelet para cada acción.
 - Inserta botones que navegan directamente al Suitelet.
 
 ## Cambios recientes
 
 - Nuevos scripts:
-  - `SM_CS_Botones_OS.js`: Client Script que envía al Suitelet para cambiar el estado de la OS a `parcial` o `finalizada`.
-  - `SM_SL_Cambiar_Estado_OS.js`: Suitelet que actualiza los campos `custbody_sm_estado` y `custbody_sm_tipos_estado` según la acción recibida, y redirige al registro.
-  - `SM_UE_Botones_OS.js`: User Event `beforeLoad` que agrega los botones `Visita Parcial` y `Finalizada` al formulario en vista.
+  - `SM_CS_Botones_OS.js`: Client Script que envía al Suitelet para cambiar el estado de la OS a `parcial`, `finalizada` o `enviarFacturacion`.
+  - `SM_SL_Cambiar_Estado_OS.js`: Suitelet que actualiza los campos `custbody_sm_estado` y `custbody_sm_tipos_estado` según la acción recibida, y marca `custbody_sm_enviado_fact` en la acción `enviarFacturacion`.
+  - `SM_UE_Botones_OS.js`: User Event `beforeLoad` que agrega el botón `Visita Parcial`, `Finalizada` y `Enviar a Facturación` al formulario en vista.
   - `ue_set_clase_servicio_os.js`: User Event `afterSubmit` que actualiza el campo `custbody_sm_clase_servicio` tomando la primera clase encontrada en la sublista `item`.
 - Archivos actualizados:
   - `CS_SM_Visitas_Residenciales.js`
