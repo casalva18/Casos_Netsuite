@@ -87,15 +87,33 @@ Esta carpeta contiene scripts Client Script y User Event diseñados para:
 
 ## Cambios recientes
 
-- Nuevos scripts:
-  - `SM_CS_Botones_OS.js`: Client Script que envía al Suitelet para cambiar el estado de la OS a `parcial`, `finalizada` o `enviarFacturacion`.
-  - `SM_SL_Cambiar_Estado_OS.js`: Suitelet que actualiza los campos `custbody_sm_estado` y `custbody_sm_tipos_estado` según la acción recibida, y marca `custbody_sm_enviado_fact` en la acción `enviarFacturacion`.
-  - `SM_UE_Botones_OS.js`: User Event `beforeLoad` que agrega el botón `Visita Parcial`, `Finalizada` y `Enviar a Facturación` al formulario en vista.
-  - `ue_set_clase_servicio_os.js`: User Event `afterSubmit` que actualiza el campo `custbody_sm_clase_servicio` tomando la primera clase encontrada en la sublista `item`.
-- Archivos actualizados:
-  - `CS_SM_Visitas_Residenciales.js`
-  - `UE_SM_Competencias_Proyecto.js`
-  - `UE_SM_Visitas_Residenciales.js`
+### Sistema de Botones y Estados de Orden de Servicio (29-06-2026)
+Implementación de flujo completo para gestión de estados y facturación de órdenes de servicio:
+
+**Nuevos scripts:**
+- `SM_CS_Botones_OS.js`: Client Script que gestiona las acciones de botones (`parcial`, `finalizada`, `enviarFacturacion`). Incluye confirmación de usuario antes de enviar a facturación.
+- `SM_SL_Cambiar_Estado_OS.js`: Suitelet que procesa los cambios de estado:
+  - `parcial`: Actualiza estado a "2" y tipo de estado a "14"
+  - `finalizada`: Actualiza estado a "3" y tipo de estado a "16"
+  - `enviarFacturacion`: Valida que la estimación origen esté aprobada (status = '5'), marca `custbody_sm_enviado_fact = true` y cambia estado de orden a 'F'
+  
+- `SM_UE_Botones_OS.js`: User Event `beforeLoad` que:
+  - Muestra botones `Visita Parcial` y `Finalizada` para roles de visitas (rol 3)
+  - Muestra botón `Enviar a Facturación` solo para roles de facturación (3, 1020) cuando:
+    - El campo `custbody_sm_enviado_fact` no está marcado
+    - La estimación origen tiene estado aprobado (status = '5')
+  - Bloquea el campo `custbody_sm_enviado_fact` para edición por usuario
+
+**Criterios de facturación implementados:**
+- Validación del estado de estimación: Solo permite enviar a facturación si la estimación origen está aprobada
+- Control de roles: Solo usuarios de facturación (1020) pueden enviar a facturación
+- Bloqueo de reedición: El campo `custbody_sm_enviado_fact` no puede ser modificado manualmente
+
+**Estado:** ✅ Verificado y listo para subir a desarrollo
+
+### Scripts anteriores
+- `ue_set_clase_servicio_os.js`: User Event `afterSubmit` que actualiza el campo `custbody_sm_clase_servicio` tomando la primera clase encontrada en la sublista `item`.
+- Otros archivos de validación y generación de OS TV
 
 ## Requisitos y despliegue
 

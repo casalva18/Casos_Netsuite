@@ -15,7 +15,7 @@ define(['N/currentRecord', 'N/url'], (currentRecord, url) => {
   }
 
   function enviarFacturacion() {
-    if (!confirm('¿Está seguro de marcar esta Orden de Servicio como enviada a Facturación?')) {
+    if (!confirm('¿Está seguro de enviar esta Orden de Servicio a Facturación?')) {
       return;
     }
     cambiarEstado('enviarFacturacion');
