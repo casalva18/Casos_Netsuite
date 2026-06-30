@@ -6,7 +6,7 @@ define(['N/url', 'N/log', 'N/runtime', 'N/search', 'N/ui/serverWidget'],(url, lo
 
   function beforeLoad(context) {
     try {
-      if (context.type !== context.UserEventType.VIEW) {
+      if (context.type !== context.UserEventType.VIEW && context.type !== context.UserEventType.EDIT) {
         return;
       }
 
